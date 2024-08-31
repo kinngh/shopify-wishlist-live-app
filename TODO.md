@@ -41,4 +41,4 @@
 
 ### Integrations
 
-- [ ] Shopify Search Discovery - filter collections with wishlist items only
+- [ ] Shopify Search and Discovery - filter collections with wishlist items only
