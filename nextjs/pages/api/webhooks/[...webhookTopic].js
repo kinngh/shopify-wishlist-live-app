@@ -7,6 +7,7 @@
  * To update this file, run `npm run update:config` or `bun run update:config`
  */
 
+import ordersHandler from "@/utils/webhooks/orders.js";
 import shopify from "@/utils/shopify.js";
 import appUninstallHandler from "@/utils/webhooks/app_uninstalled.js";
 
@@ -42,6 +43,16 @@ export default async function handler(req, res) {
     switch (validateWebhook.topic) {
       case "APP_UNINSTALLED":
         appUninstallHandler(
+          validateWebhook.topic,
+          shop,
+          rawBody,
+          webhookId,
+          apiVersion
+        );
+        break;
+      case "ORDERS_CREATE":
+      case "ORDERS_UPDATE":
+        ordersHandler(
           validateWebhook.topic,
           shop,
           rawBody,

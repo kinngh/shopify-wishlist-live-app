@@ -11,6 +11,7 @@ const App = ({ Component, pageProps }) => {
         <AppBridgeProvider>
           <ui-nav-menu>
             <Link href="/debug">Debug Cards</Link>
+            <Link href="/info">Info</Link>
           </ui-nav-menu>
           <Component {...pageProps} />
         </AppBridgeProvider>

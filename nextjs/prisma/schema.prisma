@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model stores {
@@ -21,7 +22,79 @@ model session {
   id      String  @id
   content String? @db.Text
   shop    String?
-  
+
   @@index([id])
   @@index([shop])
+}
+
+model friend_code {
+  //when a customer sends an invite to another customer to share their wishlist, we create an entry
+  // and send emails.
+  //Once accepted, we add the customers to their respective `friend` entry.
+  id               String   @id
+  sending_customer String
+  rec_customer     String
+  code             String   @default(uuid(7))
+  status           status   @default(sent)
+  accepted         Boolean  @default(false)
+  //baseline
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  @@unique([sending_customer, rec_customer])
+}
+
+enum status {
+  sent
+  accepted
+  rejected
+}
+
+model friend {
+  id            String     @id
+  main_customer String
+  friends       customer[]
+}
+
+model customer {
+  id       String      @id //customer gid
+  //pii
+  name     String
+  email    String
+  wishlist wishlists[]
+  friend   friend?     @relation(fields: [id], references: [id])
+
+  @@index([id])
+}
+
+model wishlists {
+  id                String              @id @default(uuid())
+  name              String
+  customer          customer?           @relation(fields: [id], references: [id])
+  wishlist_products wishlist_products[]
+
+  @@index([id])
+}
+
+model wishlist_products {
+  id                    String                 @id @default(uuid())
+  product_id            String
+  variant_id            String
+  title                 String
+  variant_title         String                 @default("Default Title")
+  wishlists             wishlists[]
+  //relationships
+  wishlist_product_data wishlist_product_data? @relation(fields: [id], references: [id])
+
+  @@unique([product_id, variant_id])
+}
+
+model wishlist_product_data {
+  id                String             @id @default(uuid())
+  //baselines
+  created_at        DateTime           @default(now())
+  //relationships
+  wishlist_products wishlist_products?
+
+  @@index([id])
 }

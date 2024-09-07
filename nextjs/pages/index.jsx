@@ -5,149 +5,57 @@ import {
   Card,
   InlineStack,
   Layout,
+  List,
   Page,
   Text,
 } from "@shopify/polaris";
-import { ExternalIcon } from "@shopify/polaris-icons";
 import { useRouter } from "next/router";
 
 export async function getServerSideProps(context) {
   //DO NOT REMOVE THIS.
   return await isInitialLoad(context);
+  //DO NOT REMOVE THIS.
 }
 
-const HomePage = () => {
+const Index = () => {
   const router = useRouter();
-  const isDev = process.env.NODE_ENV === "development";
-
   return (
     <>
-      <Page title="Home">
+      <Page title="Dashboard">
         <Layout>
-          {isDev ? (
-            <Layout.Section variant="fullWidth">
-              <Card>
-                <BlockStack gap="200">
-                  <Text as="h2" variant="headingMd">
-                    Debug Cards
-                  </Text>
-                  <Text>
-                    Explore how the repository handles data fetching from the
-                    backend, App Proxy, making GraphQL requests, Billing API and
-                    more.
-                  </Text>
-                  <InlineStack wrap={false} align="end">
-                    <Button
-                      variant="primary"
-                      onClick={() => {
-                        router.push("/debug");
-                      }}
-                    >
-                      Debug Cards
-                    </Button>
-                  </InlineStack>
-                </BlockStack>
-              </Card>
-            </Layout.Section>
-          ) : null}
-          <Layout.Section variant="oneHalf">
+          <Layout.Section>
             <Card>
               <BlockStack gap="200">
-                <Text as="h2" variant="headingMd">
-                  App Bridge CDN
-                </Text>
-                <Text>AppBridge has moved from an npm package to CDN</Text>
-                <InlineStack wrap={false} align="end">
-                  <Button
-                    variant="primary"
-                    external
-                    icon={ExternalIcon}
-                    onClick={() => {
-                      open(
-                        "https://shopify.dev/docs/api/app-bridge-library/reference",
-                        "_blank"
-                      );
-                    }}
-                  >
-                    Explore
-                  </Button>
-                </InlineStack>
+                <List>
+                  <List.Item>
+                    Setup block to ensure merchant sets up the theme extension
+                  </List.Item>
+                  <List.Item>Analytics (polaris viz)</List.Item>
+                  <List.Item>
+                    See which customer has wishlisted a certain product
+                  </List.Item>
+                  <List>
+                    <List.Item>
+                      Click on product to see customers who wishlisted it
+                    </List.Item>
+                    <List.Item>
+                      Click on customer to see what products they wishlisted
+                    </List.Item>
+                  </List>
+                  <List.Item>
+                    Orders create and update webhooks so if a new order comes in
+                    with line item attribute of `_wishlist`, that means the
+                    product was in customer's wishlist. Remove it from wishlist
+                    and add it to analytics.
+                  </List.Item>
+                </List>
               </BlockStack>
             </Card>
           </Layout.Section>
-          <Layout.Section variant="oneHalf">
-            <Card>
-              <BlockStack gap="200">
-                <Text as="h2" variant="headingMd">
-                  Repository
-                </Text>
-                <Text>
-                  Found a bug? Open an issue on the repository, or star on
-                  GitHub
-                </Text>
-                <InlineStack wrap={false} align="end" gap="200">
-                  <Button
-                    external
-                    icon={ExternalIcon}
-                    onClick={() => {
-                      open(
-                        "https://github.com/kinngh/shopify-nextjs-prisma-app/issues?q=is%3Aissue",
-                        "_blank"
-                      );
-                    }}
-                  >
-                    Issues
-                  </Button>
-                  <Button
-                    external
-                    variant="primary"
-                    icon={ExternalIcon}
-                    onClick={() => {
-                      open(
-                        "https://github.com/kinngh/shopify-nextjs-prisma-app",
-                        "_blank"
-                      );
-                    }}
-                  >
-                    Star
-                  </Button>
-                </InlineStack>
-              </BlockStack>
-            </Card>
-          </Layout.Section>
-          <Layout.Section variant="oneHalf">
-            <Card>
-              <BlockStack gap="200">
-                <Text as="h2" variant="headingMd">
-                  Course
-                </Text>
-                <Text>
-                  [BETA] I'm building course as a live service on How To Build
-                  Shopify Apps
-                </Text>
-                <InlineStack wrap={false} align="end">
-                  <Button
-                    external
-                    variant="primary"
-                    icon={ExternalIcon}
-                    onClick={() => {
-                      open(
-                        "https://kinngh.gumroad.com/l/how-to-make-shopify-apps?utm_source=boilerplate&utm_medium=nextjs",
-                        "_blank"
-                      );
-                    }}
-                  >
-                    Buy
-                  </Button>
-                </InlineStack>
-              </BlockStack>
-            </Card>
-          </Layout.Section>
-          <Layout.Section variant="oneHalf" />
         </Layout>
       </Page>
     </>
   );
 };
 
-export default HomePage;
+export default Index;
