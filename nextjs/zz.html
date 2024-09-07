@@ -1,0 +1,22 @@
+<script>
+  async function addToWishlist() {
+    const response = await (
+      await fetch("/apps/wishlist/wishlist/add_product", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          product_id: "{{ product.id }}",
+          variant_id: "{{ product.selected_or_first_available_variant.id }}",
+          title: "{{ product.title }}",
+          variant_title:
+            "{{ product.selected_or_first_available_variant.title }}",
+        }),
+      })
+    ).json();
+  }
+</script>
+
+<button onclick="addToWishlist()">Add to wishlist</button>

@@ -50,51 +50,35 @@ enum status {
   rejected
 }
 
-model friend {
-  id            String     @id
-  main_customer String
-  friends       customer[]
-}
-
 model customer {
-  id       String      @id //customer gid
+  id        String      @id //customer gid
   //pii
-  name     String
-  email    String
-  wishlist wishlists[]
-  friend   friend?     @relation(fields: [id], references: [id])
+  name      String?
+  email     String?
+  wishlists wishlists[]
 
   @@index([id])
 }
 
 model wishlists {
-  id                String              @id @default(uuid())
-  name              String
-  customer          customer?           @relation(fields: [id], references: [id])
-  wishlist_products wishlist_products[]
+  id               String             @id @default(uuid())
+  name             String
+  isDefault        Boolean            @default(false)
+  customer         customer?          @relation(fields: [customerId], references: [id])
+  customerId       String?
+  wishlist_product wishlist_product[]
 
   @@index([id])
+  @@index([customerId])
 }
 
-model wishlist_products {
-  id                    String                 @id @default(uuid())
-  product_id            String
-  variant_id            String
-  title                 String
-  variant_title         String                 @default("Default Title")
-  wishlists             wishlists[]
-  //relationships
-  wishlist_product_data wishlist_product_data? @relation(fields: [id], references: [id])
+model wishlist_product {
+  id            String      @id @default(uuid())
+  product_id    String
+  variant_id    String
+  title         String
+  variant_title String      @default("Default Title")
+  wishlists     wishlists[]
 
   @@unique([product_id, variant_id])
-}
-
-model wishlist_product_data {
-  id                String             @id @default(uuid())
-  //baselines
-  created_at        DateTime           @default(now())
-  //relationships
-  wishlist_products wishlist_products?
-
-  @@index([id])
 }

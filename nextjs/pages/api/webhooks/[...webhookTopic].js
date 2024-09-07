@@ -51,7 +51,7 @@ export default async function handler(req, res) {
         );
         break;
       case "ORDERS_CREATE":
-      case "ORDERS_UPDATE":
+      case "ORDERS_UPDATED":
         ordersHandler(
           validateWebhook.topic,
           shop,

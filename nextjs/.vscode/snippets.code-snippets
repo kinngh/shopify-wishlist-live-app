@@ -164,4 +164,31 @@
     ],
     "description": "Offline GraphQL Client Provider",
   },
+  "POST request": {
+    "prefix": "createpost",
+    "body": [
+      "const $1 = await(",
+      "await fetch(\"/api/apps/$2\", {",
+      "headers: {",
+      "      Accept: \"application/json\",",
+      "      \"Content-Type\": \"application/json\",",
+      "    },",
+      "    method: \"POST\",",
+      "    body: JSON.stringify(${3:body}),",
+      "})",
+      ").json();",
+    ],
+    "description": "Creates a new POST fetch request",
+  },
+  "GET request": {
+    "prefix": "createget",
+    "body": [
+      "const $1 = await(",
+      "await fetch(\"/api/apps/$2\", {",
+      "    method: \"GET\",",
+      "})",
+      ").json();",
+    ],
+    "description": "Creates a new GET fetch request",
+  },
 }

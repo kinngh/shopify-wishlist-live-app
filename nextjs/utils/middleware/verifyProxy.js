@@ -23,6 +23,7 @@ const verifyProxy = async (req, res, next) => {
 
   if (calculatedSignature === signature) {
     req.user_shop = req.query.shop; //myshopify domain
+    req.customer_id = req.query.logged_in_customer_id;
     await next();
   } else {
     return res.status(401).send({
