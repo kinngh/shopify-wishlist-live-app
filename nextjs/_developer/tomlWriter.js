@@ -28,10 +28,26 @@ try {
   // Auth
   config.auth = {};
   config.auth.redirect_urls = [`${appUrl}/api/`];
-  //Scopes
+  // Scopes
   config.access_scopes = {};
   config.access_scopes.scopes = process.env.SHOPIFY_API_SCOPES;
   config.access_scopes.use_legacy_install_flow = false;
+
+  if (
+    process.env.DIRECT_API_MODE &&
+    process.env.EMBEDDED_APP_DIRECT_API_ACCESS
+  ) {
+    // Access
+    config.access = {};
+    config.access.admin = {};
+    process.env.DIRECT_API_MODE
+      ? (config.access.admin.direct_api_mode = process.env.DIRECT_API_MODE)
+      : null;
+    process.env.EMBEDDED_APP_DIRECT_API_ACCESS
+      ? (config.access.admin.embedded_app_direct_api_access =
+          process.env.EMBEDDED_APP_DIRECT_API_ACCESS === "true")
+      : null;
+  }
 
   // Webhook event version to always match the app API version
   config.webhooks = {};
